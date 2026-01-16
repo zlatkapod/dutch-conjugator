@@ -36,14 +36,14 @@ npm run build
 ```
 The build artifacts will be in the `dist/` directory.
 
-## GitLab Pages Deployment
+## GitHub Pages Deployment
 
-This project is configured for GitLab Pages via `.gitlab-ci.yml`.
+This project is configured for GitHub Pages via GitHub Actions.
 
-1. Push your code to a GitLab repository.
-2. Ensure the default branch is named `main`.
-3. GitLab CI will automatically build and deploy the site.
-4. Go to **Settings > Pages** in your GitLab project to find the URL of your site.
+1. Push your code to the GitHub repository.
+2. Go to **Settings > Pages** in your GitHub repository.
+3. Under **Build and deployment > Source**, select **GitHub Actions**.
+4. The site will automatically build and deploy. You can see progress in the **Actions** tab.
 
 ## Data Structure
 Verbs are stored in `src/data/verbs.json`. Each verb has:
