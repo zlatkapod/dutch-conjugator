@@ -1,0 +1,122 @@
+[
+  {
+    "infinitive": "zijn",
+    "forms": {
+      "present": { "ik": "ben", "jij": "bent", "hijzij": "is", "wij": "zijn" },
+      "past": { "ik": "was", "jij": "was", "hijzij": "was", "wij": "waren" },
+      "perfect": { "ik": "ben geweest", "jij": "bent geweest", "hijzij": "is geweest", "wij": "zijn geweest" }
+    }
+  },
+  {
+    "infinitive": "hebben",
+    "forms": {
+      "present": { "ik": "heb", "jij": "hebt", "hijzij": "heeft", "wij": "hebben" },
+      "past": { "ik": "had", "jij": "had", "hijzij": "had", "wij": "hadden" },
+      "perfect": { "ik": "heb gehad", "jij": "hebt gehad", "hijzij": "heeft gehad", "wij": "hebben gehad" }
+    }
+  },
+  {
+    "infinitive": "gaan",
+    "forms": {
+      "present": { "ik": "ga", "jij": "gaat", "hijzij": "gaat", "wij": "gaan" },
+      "past": { "ik": "ging", "jij": "ging", "hijzij": "ging", "wij": "gingen" },
+      "perfect": { "ik": "ben gegaan", "jij": "bent gegaan", "hijzij": "is gegaan", "wij": "zijn gegaan" }
+    }
+  },
+  {
+    "infinitive": "komen",
+    "forms": {
+      "present": { "ik": "kom", "jij": "komt", "hijzij": "komt", "wij": "komen" },
+      "past": { "ik": "kwam", "jij": "kwam", "hijzij": "kwam", "wij": "kwamen" },
+      "perfect": { "ik": "ben gekomen", "jij": "bent gekomen", "hijzij": "is gekomen", "wij": "zijn gekomen" }
+    }
+  },
+  {
+    "infinitive": "worden",
+    "forms": {
+      "present": { "ik": "word", "jij": "wordt", "hijzij": "wordt", "wij": "worden" },
+      "past": { "ik": "werd", "jij": "werd", "hijzij": "werd", "wij": "werden" },
+      "perfect": { "ik": "ben geworden", "jij": "bent geworden", "hijzij": "is geworden", "wij": "zijn geworden" }
+    }
+  },
+  {
+    "infinitive": "kunnen",
+    "forms": {
+      "present": { "ik": "kan", "jij": "kunt|kan", "hijzij": "kan", "wij": "kunnen" },
+      "past": { "ik": "kon", "jij": "kon", "hijzij": "kon", "wij": "konden" },
+      "perfect": { "ik": "heb gekund", "jij": "hebt gekund", "hijzij": "heeft gekund", "wij": "hebben gekund" }
+    }
+  },
+  {
+    "infinitive": "zullen",
+    "forms": {
+      "present": { "ik": "zal", "jij": "zult|zal", "hijzij": "zal", "wij": "zullen" },
+      "past": { "ik": "zou", "jij": "zou", "hijzij": "zou", "wij": "zouden" },
+      "perfect": { "ik": "heb gezuld", "jij": "hebt gezuld", "hijzij": "heeft gezuld", "wij": "hebben gezuld" }
+    }
+  },
+  {
+    "infinitive": "moeten",
+    "forms": {
+      "present": { "ik": "moet", "jij": "moet", "hijzij": "moet", "wij": "moeten" },
+      "past": { "ik": "moest", "jij": "moest", "hijzij": "moest", "wij": "moesten" },
+      "perfect": { "ik": "heb gemoeten", "jij": "hebt gemoeten", "hijzij": "heeft gemoeten", "wij": "hebben gemoeten" }
+    }
+  },
+  {
+    "infinitive": "maken",
+    "forms": {
+      "present": { "ik": "maak", "jij": "maakt", "hijzij": "maakt", "wij": "maken" },
+      "past": { "ik": "maakte", "jij": "maakte", "hijzij": "maakte", "wij": "maakten" },
+      "perfect": { "ik": "heb gemaakt", "jij": "hebt gemaakt", "hijzij": "heeft gemaakt", "wij": "hebben gemaakt" }
+    }
+  },
+  {
+    "infinitive": "doen",
+    "forms": {
+      "present": { "ik": "doe", "jij": "doet", "hijzij": "doet", "wij": "doen" },
+      "past": { "ik": "deed", "jij": "deed", "hijzij": "deed", "wij": "deden" },
+      "perfect": { "ik": "heb gedaan", "jij": "hebt gedaan", "hijzij": "heeft gedaan", "wij": "hebben gedaan" }
+    }
+  },
+  {
+    "infinitive": "zeggen",
+    "forms": {
+      "present": { "ik": "zeg", "jij": "zegt", "hijzij": "zegt", "wij": "zeggen" },
+      "past": { "ik": "zei", "jij": "zei", "hijzij": "zei", "wij": "zeiden" },
+      "perfect": { "ik": "heb gezegd", "jij": "hebt gezegd", "hijzij": "heeft gezegd", "wij": "hebben gezegd" }
+    }
+  },
+  {
+    "infinitive": "willen",
+    "forms": {
+      "present": { "ik": "wil", "jij": "wilt|wil", "hijzij": "wil", "wij": "willen" },
+      "past": { "ik": "wilde|wou", "jij": "wilde|wou", "hijzij": "wilde|wou", "wij": "wilden|wouden" },
+      "perfect": { "ik": "heb gewild", "jij": "hebt gewild", "hijzij": "heeft gewild", "wij": "hebben gewild" }
+    }
+  },
+  {
+    "infinitive": "zien",
+    "forms": {
+      "present": { "ik": "zie", "jij": "ziet", "hijzij": "ziet", "wij": "zien" },
+      "past": { "ik": "zag", "jij": "zag", "hijzij": "zag", "wij": "zagen" },
+      "perfect": { "ik": "heb gezien", "jij": "hebt gezien", "hijzij": "heeft gezien", "wij": "hebben gezien" }
+    }
+  },
+  {
+    "infinitive": "staan",
+    "forms": {
+      "present": { "ik": "sta", "jij": "staat", "hijzij": "staat", "wij": "staan" },
+      "past": { "ik": "stond", "jij": "stond", "hijzij": "stond", "wij": "stonden" },
+      "perfect": { "ik": "heb gestaan", "jij": "hebt gestaan", "hijzij": "heeft gestaan", "wij": "hebben gestaan" }
+    }
+  },
+  {
+    "infinitive": "lopen",
+    "forms": {
+      "present": { "ik": "loop", "jij": "loopt", "hijzij": "loopt", "wij": "lopen" },
+      "past": { "ik": "liep", "jij": "liep", "hijzij": "liep", "wij": "liepen" },
+      "perfect": { "ik": "heb/ben gelopen", "jij": "hebt/bent gelopen", "hijzij": "heeft/is gelopen", "wij": "hebben/zijn gelopen" }
+    }
+  }
+]
