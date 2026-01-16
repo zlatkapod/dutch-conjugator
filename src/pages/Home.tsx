@@ -40,7 +40,8 @@ const Home: React.FC<HomeProps> = ({ onStart }) => {
 
   return (
     <div className="home-screen card">
-      <h1>Dutch Verb Trainer</h1>
+      <span className="culture-icon">🇳🇱 🎡 🧀</span>
+      <h1>Dutch Verb Trainer <span className="dutch-flag"></span></h1>
       <p>Master Dutch verb conjugations across Present (TT), Past (OVT), and Perfect (VTT) tenses.</p>
       
       <div style={{ margin: '2rem 0' }}>

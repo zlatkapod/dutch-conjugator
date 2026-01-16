@@ -39,6 +39,24 @@ body {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.culture-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.dutch-flag {
+  display: inline-block;
+  width: 30px;
+  height: 20px;
+  background: linear-gradient(to bottom, #AE1C28 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #21468B 66.6%);
+  border: 1px solid #ddd;
+  margin: 0 5px;
+  vertical-align: middle;
 }
 
 h1 {
@@ -123,6 +141,12 @@ input[type="number"], input[type="text"] {
   padding-right: 10px;
 }
 
+.cell-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .cell-input {
   width: 100%;
   min-width: 100px;
@@ -136,6 +160,15 @@ input[type="number"], input[type="text"] {
 .cell-input.incorrect {
   border: 2px solid var(--error) !important;
   background-color: #ffebee;
+  text-decoration: line-through;
+  color: var(--error);
+}
+
+.correct-answer {
+  color: var(--success);
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-align: left;
 }
 
 .tense-hint {

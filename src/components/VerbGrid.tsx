@@ -55,7 +55,7 @@ const VerbGrid: React.FC<VerbGridProps> = ({ verb, answers, onAnswerChange, isCh
             const isCorrect = isChecked ? validateAnswer(value, correctForms) : null;
             
             return (
-              <div key={tense.key}>
+              <div key={tense.key} className="cell-container">
                 <input
                   type="text"
                   className={`cell-input ${isChecked ? (isCorrect ? 'correct' : 'incorrect') : ''}`}
@@ -68,6 +68,11 @@ const VerbGrid: React.FC<VerbGridProps> = ({ verb, answers, onAnswerChange, isCh
                   autoCapitalize="off"
                   spellCheck="false"
                 />
+                {isChecked && !isCorrect && (
+                  <div className="correct-answer">
+                    {correctForms.split('|')[0]}
+                  </div>
+                )}
               </div>
             );
           })}
