@@ -33,8 +33,8 @@ const Quiz: React.FC<QuizProps> = ({ session, onFinish }) => {
     const newSession = { ...localSession };
     let verbMistakes = 0;
     
-    const tenses: ('present' | 'past' | 'perfect')[] = ['present', 'past', 'perfect'];
-    const persons: (keyof VerbForms)[] = ['ik', 'jij', 'hijzij', 'wij'];
+    const tenses = localSession.selectedTenses;
+    const persons = localSession.selectedPersons;
 
     tenses.forEach(tense => {
       persons.forEach(person => {
@@ -87,6 +87,8 @@ const Quiz: React.FC<QuizProps> = ({ session, onFinish }) => {
         onAnswerChange={handleAnswerChange}
         isChecked={isChecked}
         onEnterPressed={handleCheck}
+        selectedTenses={localSession.selectedTenses}
+        selectedPersons={localSession.selectedPersons}
       />
 
       <div className="actions">

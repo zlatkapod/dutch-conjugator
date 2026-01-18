@@ -12,6 +12,8 @@ interface VerbGridProps {
   onAnswerChange: (tense: 'present' | 'past' | 'perfect', person: keyof VerbForms, value: string) => void;
   isChecked: boolean;
   onEnterPressed?: () => void;
+  selectedTenses?: ('present' | 'past' | 'perfect')[];
+  selectedPersons?: (keyof VerbForms)[];
 }
 
 const persons: { key: keyof VerbForms; label: string }[] = [
@@ -27,29 +29,40 @@ const tenses: { key: 'present' | 'past' | 'perfect'; label: string; hint: string
   { key: 'perfect', label: 'Perfect', hint: 'VTT' },
 ];
 
-const VerbGrid: React.FC<VerbGridProps> = ({ verb, answers, onAnswerChange, isChecked, onEnterPressed }) => {
+const VerbGrid: React.FC<VerbGridProps> = ({ 
+  verb, 
+  answers, 
+  onAnswerChange, 
+  isChecked, 
+  onEnterPressed,
+  selectedTenses = ['present', 'past', 'perfect'],
+  selectedPersons = ['ik', 'jij', 'hijzij', 'wij']
+}) => {
+  const activeTenses = tenses.filter(t => selectedTenses.includes(t.key));
+  const activePersons = persons.filter(p => selectedPersons.includes(p.key));
+
   const handleKeyDown = (e: React.KeyboardEvent, tenseIndex: number, personIndex: number) => {
     if (e.key === 'Enter') {
-      if (tenseIndex === tenses.length - 1 && personIndex === persons.length - 1) {
+      if (tenseIndex === activeTenses.length - 1 && personIndex === activePersons.length - 1) {
         onEnterPressed?.();
       }
     }
   };
 
   return (
-    <div className="grid-container">
+    <div className="grid-container" style={{ gridTemplateColumns: `auto repeat(${activeTenses.length}, 1fr)` }}>
       <div className="grid-header"></div>
-      {tenses.map((tense) => (
+      {activeTenses.map((tense) => (
         <div key={tense.key} className="grid-header">
           {tense.label}
           <span className="tense-hint">({tense.hint})</span>
         </div>
       ))}
 
-      {persons.map((person, pIdx) => (
+      {activePersons.map((person, pIdx) => (
         <React.Fragment key={person.key}>
           <div className="grid-label">{person.label}</div>
-          {tenses.map((tense, tIdx) => {
+          {activeTenses.map((tense, tIdx) => {
             const value = answers[tense.key][person.key];
             const correctForms = verb.forms[tense.key][person.key];
             const isCorrect = isChecked ? validateAnswer(value, correctForms) : null;

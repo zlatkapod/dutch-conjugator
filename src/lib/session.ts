@@ -32,6 +32,8 @@ export interface Session {
   };
   mistakes: number;
   perVerbMistakes: { [infinitive: string]: number };
+  selectedTenses: ('present' | 'past' | 'perfect')[];
+  selectedPersons: (keyof VerbForms)[];
 }
 
 const SESSION_KEY = 'conjugator_session';
@@ -55,7 +57,12 @@ export const clearSession = () => {
   localStorage.removeItem(SESSION_KEY);
 };
 
-export const createSession = (infinitives: string[], totalQuestions: number): Session => {
+export const createSession = (
+  infinitives: string[], 
+  totalQuestions: number,
+  selectedTenses: ('present' | 'past' | 'perfect')[] = ['present', 'past', 'perfect'],
+  selectedPersons: (keyof VerbForms)[] = ['ik', 'jij', 'hijzij', 'wij']
+): Session => {
   const session: Session = {
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
@@ -66,6 +73,8 @@ export const createSession = (infinitives: string[], totalQuestions: number): Se
     checked: {},
     mistakes: 0,
     perVerbMistakes: {},
+    selectedTenses,
+    selectedPersons,
   };
   
   infinitives.forEach(inf => {
