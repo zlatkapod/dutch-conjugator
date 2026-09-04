@@ -76,7 +76,7 @@ const VerbGrid: React.FC<VerbGridProps> = ({
   };
 
   return (
-    <div className="grid-container" style={{ gridTemplateColumns: `auto repeat(${activeTenses.length}, 1fr)` }}>
+    <div className="grid-container" style={{ gridTemplateColumns: `auto repeat(${activeTenses.length}, minmax(0, 1fr))` }}>
       <div className="grid-header"></div>
       {activeTenses.map((tense) => (
         <div key={tense.key} className="grid-header">

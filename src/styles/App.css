@@ -241,12 +241,26 @@ input[type="number"], input[type="text"] {
 }
 
 @media (max-width: 600px) {
+  /* Claw back horizontal room so the grid fits the screen instead of
+     scrolling. A scrolled grid leaves its right-hand column permanently
+     half-hidden, since nothing signals that it can be scrolled.
+     (grid-template-columns is set inline per selected tense count, so there
+     is deliberately no column rule here to fight it.) */
+  #root {
+    padding: 12px;
+  }
+  .card {
+    padding: 1.25rem;
+  }
   .grid-container {
-    grid-template-columns: auto repeat(3, 1fr);
     font-size: 0.9rem;
+    gap: 8px;
+  }
+  .grid-label {
+    padding-right: 4px;
   }
   .cell-input {
-    min-width: 80px;
+    min-width: 0;
     padding: 0.4rem;
   }
 }
