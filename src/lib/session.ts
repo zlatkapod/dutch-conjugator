@@ -5,8 +5,18 @@ export interface VerbForms {
   wij: string;
 }
 
+/** 'mixed' = weak past with a strong participle, or the reverse (vragen -> vroeg/gevraagd). */
+export type VerbType = 'regular' | 'irregular' | 'mixed';
+
 export interface Verb {
   infinitive: string;
+  /** English gloss, for hints and results. */
+  english?: string;
+  type?: VerbType;
+  /** Perfect auxiliary; 'hebben|zijn' when both are current. */
+  aux?: string;
+  /** Set only where a verb needs a caveat, e.g. zullen has no past participle. */
+  note?: string;
   forms: {
     present: VerbForms;
     past: VerbForms;
