@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { Session } from '../lib/session';
 import { clearSession } from '../lib/session';
 
@@ -9,8 +9,20 @@ interface ResultsProps {
 }
 
 const Results: React.FC<ResultsProps> = ({ session, onRestart, onHome }) => {
-  const totalFields = session.totalQuestions * 12;
-  const accuracy = (1 - session.mistakes / totalFields) * 100;
+  // Only the tenses and persons the user picked were ever asked, so the
+  // denominator follows the session's own grid rather than a full 3x4 one.
+  // The fallbacks cover sessions stored before those settings existed.
+  const cellsPerVerb = (session.selectedTenses?.length ?? 3) * (session.selectedPersons?.length ?? 4);
+  const totalFields = session.totalQuestions * cellsPerVerb;
+  const accuracy = totalFields > 0 ? (1 - session.mistakes / totalFields) * 100 : 0;
+
+  const tryAgainRef = useRef<HTMLButtonElement>(null);
+
+  // Last stop in the Enter-driven flow: land on the primary action so the
+  // keyboard can start the next session without reaching for the mouse.
+  useEffect(() => {
+    tryAgainRef.current?.focus();
+  }, []);
 
   const handleRestart = () => {
     clearSession();
@@ -61,7 +73,7 @@ const Results: React.FC<ResultsProps> = ({ session, onRestart, onHome }) => {
       </div>
 
       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-        <button className="btn btn-primary" onClick={handleRestart}>
+        <button ref={tryAgainRef} className="btn btn-primary" onClick={handleRestart}>
           Try Again
         </button>
         <button className="btn btn-outline" onClick={handleHome}>

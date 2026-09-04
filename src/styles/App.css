@@ -111,6 +111,13 @@ h1 {
   background-color: #ffebee;
 }
 
+/* The quiz is driven with Enter, so focus has to be obvious wherever it lands. */
+.btn:focus-visible,
+.cell-input:focus-visible {
+  outline: 3px solid var(--primary-dark);
+  outline-offset: 2px;
+}
+
 input[type="number"], input[type="text"] {
   padding: 0.5rem;
   border: 1px solid var(--border);
