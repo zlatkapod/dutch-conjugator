@@ -47,7 +47,7 @@ const Results: React.FC<ResultsProps> = ({ session, onRestart, onHome }) => {
         <h3>Mistakes by verb:</h3>
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {Object.entries(session.perVerbMistakes)
-            .filter(([_, count]) => count > 0)
+            .filter(([, count]) => count > 0)
             .map(([verb, count]) => (
               <li key={verb} style={{ padding: '0.5rem 0', borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'space-between' }}>
                 <span>{verb}</span>

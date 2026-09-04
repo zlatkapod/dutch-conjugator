@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import type { Session, VerbForms } from '../lib/session';
+import React, { useState, useMemo } from 'react';
+import type { Session, VerbForms, Verb, VerbType } from '../lib/session';
 import { loadSession, clearSession, createSession } from '../lib/session';
 import verbsData from '../data/verbs.json';
 
@@ -20,24 +20,58 @@ const PERSONS: { key: keyof VerbForms; label: string }[] = [
   { key: 'wij', label: 'we' },
 ];
 
+const VERB_TYPES: { key: VerbType; label: string }[] = [
+  { key: 'regular', label: 'Regular (weak)' },
+  { key: 'irregular', label: 'Irregular (strong)' },
+  { key: 'mixed', label: 'Mixed' },
+];
+
+const ALL_VERBS = verbsData as Verb[];
+
+const VERB_TYPE_COUNTS = ALL_VERBS.reduce<Record<string, number>>((acc, verb) => {
+  if (verb.type) acc[verb.type] = (acc[verb.type] ?? 0) + 1;
+  return acc;
+}, {});
+
+/**
+ * Fisher-Yates. `sort(() => 0.5 - Math.random())` is not a fair shuffle: it
+ * leaves items near their starting index, and since verbs.json is sorted
+ * alphabetically that drew 'aarzelen' roughly four times as often as 'zwijgen'.
+ */
+const shuffle = <T,>(items: T[]): T[] => {
+  const out = [...items];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+};
+
 const Home: React.FC<HomeProps> = ({ onStart }) => {
   const [numQuestions, setNumQuestions] = useState(5);
   const [selectedTenses, setSelectedTenses] = useState<('present' | 'past' | 'perfect')[]>(['present', 'past', 'perfect']);
   const [selectedPersons, setSelectedPersons] = useState<(keyof VerbForms)[]>(['ik', 'jij', 'hijzij', 'wij']);
-  const [existingSession, setExistingSession] = useState<Session | null>(null);
+  const [selectedTypes, setSelectedTypes] = useState<VerbType[]>(['regular', 'irregular', 'mixed']);
+  // localStorage is synchronous, so seed state directly rather than syncing it
+  // in from an effect - that rendered once with null and then again with the session.
+  const [existingSession, setExistingSession] = useState<Session | null>(loadSession);
 
-  useEffect(() => {
-    setExistingSession(loadSession());
-  }, []);
+  const verbPool = useMemo(
+    () => ALL_VERBS.filter(verb => verb.type !== undefined && selectedTypes.includes(verb.type)),
+    [selectedTypes]
+  );
 
   const handleStart = () => {
     if (selectedTenses.length === 0 || selectedPersons.length === 0) {
       alert('Please select at least one tense and one person.');
       return;
     }
-    // Randomly select verbs
-    const shuffled = [...verbsData].sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, Math.min(numQuestions, shuffled.length));
+    if (verbPool.length === 0) {
+      alert('Please select at least one verb type.');
+      return;
+    }
+    // Randomly select verbs from the pool the type filter left us
+    const selected = shuffle(verbPool).slice(0, Math.min(numQuestions, verbPool.length));
     const infinitives = selected.map(v => v.infinitive);
     
     const newSession = createSession(infinitives, selected.length, selectedTenses, selectedPersons);
@@ -53,6 +87,12 @@ const Home: React.FC<HomeProps> = ({ onStart }) => {
   const handlePersonToggle = (person: keyof VerbForms) => {
     setSelectedPersons(prev => 
       prev.includes(person) ? prev.filter(p => p !== person) : [...prev, person]
+    );
+  };
+
+  const handleTypeToggle = (type: VerbType) => {
+    setSelectedTypes(prev =>
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
     );
   };
 
@@ -124,8 +164,32 @@ const Home: React.FC<HomeProps> = ({ onStart }) => {
         </div>
       </div>
 
+      <div style={{ margin: '1.5rem 0' }}>
+        <p style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Select Verb Types:</p>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+          {VERB_TYPES.map(type => (
+            <label key={type.key} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={selectedTypes.includes(type.key)}
+                onChange={() => handleTypeToggle(type.key)}
+                style={{ marginRight: '0.4rem' }}
+              />
+              {type.label} ({VERB_TYPE_COUNTS[type.key] ?? 0})
+            </label>
+          ))}
+        </div>
+        <p style={{ marginTop: '0.6rem', marginBottom: 0, fontSize: '0.85rem', opacity: 0.7 }}>
+          {verbPool.length === 0
+            ? 'No verbs selected - pick at least one type.'
+            : verbPool.length < numQuestions
+              ? `Only ${verbPool.length} verbs match, so the test will be ${verbPool.length} questions long.`
+              : `Drawing from ${verbPool.length} verbs.`}
+        </p>
+      </div>
+
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '300px', margin: '0 auto' }}>
-        <button className="btn btn-primary" onClick={handleStart}>
+        <button className="btn btn-primary" onClick={handleStart} disabled={verbPool.length === 0}>
           Start New Test
         </button>
         

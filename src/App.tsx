@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Home from './pages/Home';
 import Quiz from './pages/Quiz';
 import Results from './pages/Results';
@@ -10,14 +10,9 @@ type Page = 'home' | 'quiz' | 'results';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
-  const [session, setSession] = useState<Session | null>(null);
-
-  useEffect(() => {
-    const saved = loadSession();
-    if (saved) {
-      setSession(saved);
-    }
-  }, []);
+  // Seeded straight from localStorage; an effect would render null first and
+  // then immediately re-render with the restored session.
+  const [session, setSession] = useState<Session | null>(loadSession);
 
   const handleStartSession = (newSession: Session) => {
     setSession(newSession);
