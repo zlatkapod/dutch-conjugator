@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { Session, VerbForms, Verb } from '../lib/session';
 import { saveSession } from '../lib/session';
 import { validateAnswer } from '../lib/validate';
 import verbsData from '../data/verbs.json';
 import VerbGrid from '../components/VerbGrid';
+import type { VerbGridHandle } from '../components/VerbGrid';
 
 interface QuizProps {
   session: Session;
@@ -17,6 +18,20 @@ const Quiz: React.FC<QuizProps> = ({ session, onFinish }) => {
   const currentInfinitive = localSession.verbInfinitives[currentIndex];
   const currentVerb = (verbsData as Verb[]).find(v => v.infinitive === currentInfinitive)!;
   const isChecked = localSession.checked[currentInfinitive];
+
+  const gridRef = useRef<VerbGridHandle>(null);
+  const actionButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Keep the whole quiz playable from the keyboard: a fresh verb starts in its
+  // first cell, and a checked one parks focus on the action button so Enter
+  // moves straight on to the next verb.
+  useEffect(() => {
+    if (isChecked) {
+      actionButtonRef.current?.focus();
+    } else {
+      gridRef.current?.focusFirstInput();
+    }
+  }, [currentInfinitive, isChecked]);
 
   const handleAnswerChange = (tense: 'present' | 'past' | 'perfect', person: keyof VerbForms, value: string) => {
     if (isChecked) return;
@@ -82,22 +97,23 @@ const Quiz: React.FC<QuizProps> = ({ session, onFinish }) => {
       <div className="verb-display">{currentInfinitive}</div>
 
       <VerbGrid
+        ref={gridRef}
         verb={currentVerb}
         answers={localSession.answers[currentInfinitive]}
         onAnswerChange={handleAnswerChange}
         isChecked={isChecked}
-        onEnterPressed={handleCheck}
+        onLastInputEnter={() => actionButtonRef.current?.focus()}
         selectedTenses={localSession.selectedTenses}
         selectedPersons={localSession.selectedPersons}
       />
 
       <div className="actions">
         {!isChecked ? (
-          <button className="btn btn-primary" onClick={handleCheck} style={{ width: '100%' }}>
+          <button ref={actionButtonRef} className="btn btn-primary" onClick={handleCheck} style={{ width: '100%' }}>
             Check
           </button>
         ) : (
-          <button className="btn btn-primary" onClick={handleNext} style={{ width: '100%' }}>
+          <button ref={actionButtonRef} className="btn btn-primary" onClick={handleNext} style={{ width: '100%' }}>
             {currentIndex < localSession.totalQuestions - 1 ? 'Next Verb' : 'See Results'}
           </button>
         )}

@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import type { Verb, VerbForms } from '../lib/session';
 import { validateAnswer } from '../lib/validate';
+
+export interface VerbGridHandle {
+  focusFirstInput: () => void;
+}
 
 interface VerbGridProps {
   verb: Verb;
@@ -11,9 +15,11 @@ interface VerbGridProps {
   };
   onAnswerChange: (tense: 'present' | 'past' | 'perfect', person: keyof VerbForms, value: string) => void;
   isChecked: boolean;
-  onEnterPressed?: () => void;
+  /** Enter in the last cell hands focus back to the page, which parks it on the action button. */
+  onLastInputEnter?: () => void;
   selectedTenses?: ('present' | 'past' | 'perfect')[];
   selectedPersons?: (keyof VerbForms)[];
+  ref?: React.Ref<VerbGridHandle>;
 }
 
 const persons: { key: keyof VerbForms; label: string }[] = [
@@ -34,18 +40,38 @@ const VerbGrid: React.FC<VerbGridProps> = ({
   answers, 
   onAnswerChange, 
   isChecked, 
-  onEnterPressed,
+  onLastInputEnter,
   selectedTenses = ['present', 'past', 'perfect'],
-  selectedPersons = ['ik', 'jij', 'hijzij', 'wij']
+  selectedPersons = ['ik', 'jij', 'hijzij', 'wij'],
+  ref
 }) => {
   const activeTenses = tenses.filter(t => selectedTenses.includes(t.key));
   const activePersons = persons.filter(p => selectedPersons.includes(p.key));
 
-  const handleKeyDown = (e: React.KeyboardEvent, tenseIndex: number, personIndex: number) => {
-    if (e.key === 'Enter') {
-      if (tenseIndex === activeTenses.length - 1 && personIndex === activePersons.length - 1) {
-        onEnterPressed?.();
-      }
+  // Cells in reading order: one entry per row/column pair, so Enter walks the
+  // grid the same way the eye does.
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const cellCount = activePersons.length * activeTenses.length;
+
+  const focusCell = (index: number) => {
+    const input = inputRefs.current[index];
+    input?.focus();
+    input?.select();
+  };
+
+  useImperativeHandle(ref, () => ({
+    focusFirstInput: () => focusCell(0),
+  }), []);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    // isComposing: an IME candidate is still open, so this Enter belongs to the word.
+    if (e.key !== 'Enter' || e.nativeEvent.isComposing) return;
+    e.preventDefault();
+
+    if (index + 1 < cellCount) {
+      focusCell(index + 1);
+    } else {
+      onLastInputEnter?.();
     }
   };
 
@@ -66,6 +92,7 @@ const VerbGrid: React.FC<VerbGridProps> = ({
             const value = answers[tense.key][person.key];
             const correctForms = verb.forms[tense.key][person.key];
             const isCorrect = isChecked ? validateAnswer(value, correctForms) : null;
+            const cellIndex = pIdx * activeTenses.length + tIdx;
             
             return (
               <div key={tense.key} className="cell-container">
@@ -75,7 +102,8 @@ const VerbGrid: React.FC<VerbGridProps> = ({
                   value={value}
                   onChange={(e) => onAnswerChange(tense.key, person.key, e.target.value)}
                   disabled={isChecked}
-                  onKeyDown={(e) => handleKeyDown(e, tIdx, pIdx)}
+                  onKeyDown={(e) => handleKeyDown(e, cellIndex)}
+                  ref={(el) => { inputRefs.current[cellIndex] = el; }}
                   autoComplete="off"
                   autoCorrect="off"
                   autoCapitalize="off"
